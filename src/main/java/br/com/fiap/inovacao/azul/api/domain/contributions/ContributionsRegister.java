@@ -1,5 +1,6 @@
 package br.com.fiap.inovacao.azul.api.domain.contributions;
 
+import br.com.fiap.inovacao.azul.api.domain.collaborator.Collaborator;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "GS_INOV_REGISTRO_CONTRIBUICAO")
-@SequenceGenerator(name = "seq_gs_inov_contribuicao", sequenceName = "seq_gs_contribuicao", initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "seq_gs_contribuicao", sequenceName = "seq_gs_inov_contribuicao", allocationSize = 1)
 public class ContributionsRegister {
 
     @Id
@@ -26,5 +27,9 @@ public class ContributionsRegister {
 
     @Column(name = "dt_contribuicao", nullable = false)
     private LocalDate date;
+
+    @ManyToOne
+    @JoinColumn(name = "cd_colaborador", nullable = false)
+    private Collaborator colabId;
 
 }

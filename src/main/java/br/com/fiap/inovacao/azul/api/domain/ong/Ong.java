@@ -1,9 +1,12 @@
 package br.com.fiap.inovacao.azul.api.domain.ong;
 
+import br.com.fiap.inovacao.azul.api.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -11,7 +14,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "GS_INOV_ONG")
-@SequenceGenerator(name = "seq_gs_inov_ong", sequenceName = "seq_gs_ong", initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "seq_gs_ong", sequenceName = "seq_gs_inov_ong", allocationSize = 1)
 public class Ong {
 
     @Id
@@ -30,5 +33,11 @@ public class Ong {
 
     @Column(name = "nr_telefone", nullable = false, length = 15)
     private String phone;
+
+    @OneToMany(mappedBy = "ongId")
+    private List<User> userId;
+
+    @OneToMany(mappedBy = "ongId")
+    private List<OngCollaborator> ongCollaboratorId;
 
 }

@@ -1,5 +1,8 @@
 package br.com.fiap.inovacao.azul.api.domain.report;
 
+import br.com.fiap.inovacao.azul.api.domain.address.Address;
+import br.com.fiap.inovacao.azul.api.domain.collaborator.CollaboratorReport;
+import br.com.fiap.inovacao.azul.api.domain.helper.HelperReport;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +11,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,7 +19,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "GS_INOV_REPORT")
-@SequenceGenerator(name = "seq_gs_inov_report", sequenceName = "seq_gs_report", initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "seq_gs_report", sequenceName = "seq_gs_inov_report", allocationSize = 1)
 @EntityListeners(AuditingEntityListener.class)
 public class Report {
 
@@ -34,4 +38,14 @@ public class Report {
     @Column(name = "st_report", nullable = false, length = 10)
     @Enumerated(EnumType.STRING)
     private StatusReport status;
+
+    @OneToMany(mappedBy = "reportId")
+    private List<HelperReport> reportHelperId;
+
+    @OneToMany(mappedBy = "reportId")
+    private List<CollaboratorReport> collaboratorReportId;
+
+    @ManyToOne
+    @JoinColumn(name = "cd_endereco", nullable = false)
+    private Address addressId;
 }

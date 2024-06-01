@@ -1,9 +1,13 @@
 package br.com.fiap.inovacao.azul.api.domain.address.country;
 
+import br.com.fiap.inovacao.azul.api.domain.address.state.State;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
+import java.util.Stack;
 
 @Getter
 @Setter
@@ -11,7 +15,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "GS_INOV_PAIS")
-@SequenceGenerator(name = "seq_gs_inov_pais", sequenceName = "seq_gs_pais", initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "seq_gs_pais", sequenceName = "seq_gs_inov_pais", allocationSize = 1)
 public class Country {
 
     @Id
@@ -23,4 +27,7 @@ public class Country {
 
     @Column(name = "cd_telefone_pais", nullable = false, length = 3)
     private String idd;
+
+    @OneToMany(mappedBy = "countryId")
+    private List<State> stateId;
 }

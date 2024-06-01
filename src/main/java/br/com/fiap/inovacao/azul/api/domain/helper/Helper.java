@@ -1,9 +1,12 @@
 package br.com.fiap.inovacao.azul.api.domain.helper;
 
+import br.com.fiap.inovacao.azul.api.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -11,7 +14,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "GS_INOV_HELPER")
-@SequenceGenerator(name = "seq_gs_inov_helper", sequenceName = "seq_gs_helper", initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "seq_gs_helper", sequenceName = "seq_gs_inov_helper", allocationSize = 1)
 public class Helper {
 
     @Id
@@ -24,5 +27,12 @@ public class Helper {
 
     @Column(name = "nr_telefone", nullable = false, length = 15)
     private String phone;
+
+    @OneToOne
+    @JoinColumn(name = "cd_usuario", nullable = false)
+    private User userId;
+
+    @OneToMany(mappedBy = "helperId")
+    private List<HelperReport> helperReportId;
 
 }
