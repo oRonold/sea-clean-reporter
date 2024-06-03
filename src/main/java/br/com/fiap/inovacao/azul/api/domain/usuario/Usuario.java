@@ -3,6 +3,7 @@ package br.com.fiap.inovacao.azul.api.domain.usuario;
 import br.com.fiap.inovacao.azul.api.domain.endereco.Endereco;
 import br.com.fiap.inovacao.azul.api.domain.helper.Helper;
 import br.com.fiap.inovacao.azul.api.domain.ong.Ong;
+import br.com.fiap.inovacao.azul.api.domain.usuario.dto.AtualizarUsuarioDTO;
 import br.com.fiap.inovacao.azul.api.domain.usuario.dto.CriarUsuarioDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -56,5 +57,17 @@ public class Usuario {
         var helper = new Helper(dto);
         helper.setUsuarioId(this);
         this.helperId = helper;
+    }
+
+    public void atualizarInformacoes(AtualizarUsuarioDTO dto){
+        if(dto.senha() != null){
+            this.senha = dto.senha();
+        }
+        if(dto.username() != null){
+            this.helperId.setNome(dto.username());
+        }
+        if(dto.telefone() != null){
+            this.helperId.setTelefone(dto.telefone());
+        }
     }
 }
