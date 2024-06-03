@@ -2,7 +2,6 @@ package br.com.fiap.inovacao.azul.api.domain.report;
 
 import br.com.fiap.inovacao.azul.api.domain.endereco.Endereco;
 import br.com.fiap.inovacao.azul.api.domain.colaborador.ColaboradorReport;
-import br.com.fiap.inovacao.azul.api.domain.endereco.logradouro.Logradouro;
 import br.com.fiap.inovacao.azul.api.domain.helper.HelperReport;
 import br.com.fiap.inovacao.azul.api.domain.report.dto.CriarReportDTO;
 import jakarta.persistence.*;
@@ -56,7 +55,12 @@ public class Report {
 
     public Report(CriarReportDTO dto){
         this.descricao = dto.descricao();
-        this.status = StatusReport.OPEN;
+        this.status = StatusReport.ABERTO;
         this.dataFinalizacao = null;
+    }
+
+    public void marcarComoConcluido(){
+        this.status = StatusReport.FECHADO;
+        this.dataFinalizacao = LocalDateTime.now();
     }
 }

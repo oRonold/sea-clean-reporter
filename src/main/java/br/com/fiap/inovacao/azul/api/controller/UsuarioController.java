@@ -1,6 +1,6 @@
 package br.com.fiap.inovacao.azul.api.controller;
 
-import br.com.fiap.inovacao.azul.api.domain.helper.HelperReport;
+import br.com.fiap.inovacao.azul.api.domain.report.StatusReport;
 import br.com.fiap.inovacao.azul.api.domain.report.dto.CriarReportDTO;
 import br.com.fiap.inovacao.azul.api.domain.report.dto.DetalhesReportDTO;
 import br.com.fiap.inovacao.azul.api.domain.report.dto.DetalhesReportUsuarioDTO;
@@ -21,6 +21,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -46,7 +48,7 @@ public class UsuarioController {
         return ResponseEntity.created(uri).body(new DetalhesUsuarioDTO(user));
     }
 
-    @PostMapping("/reports/{idHelper}")
+    @PostMapping("/report/helper/{idHelper}")
     @Transactional
     public ResponseEntity<DetalhesReportDTO> criarReport(@RequestBody @Valid CriarReportDTO dto, @PathVariable("idHelper") Long id, UriComponentsBuilder builder){
         var report = reportService.criarReport(dto, id);
@@ -54,7 +56,15 @@ public class UsuarioController {
         return ResponseEntity.created(uri).body(new DetalhesReportDTO(report));
     }
 
-    @GetMapping("/reports/{id}")
+    @PutMapping("/report/end/{id}")
+    @Transactional
+    public ResponseEntity<DetalhesReportDTO> marcarReportConcluido(@PathVariable Long id){
+        var report = reportRepository.getReferenceById(id);
+        report.marcarComoConcluido();
+        return ResponseEntity.ok(new DetalhesReportDTO(report));
+    }
+
+    @GetMapping("/report/{id}")
     public ResponseEntity<Page<DetalhesReportUsuarioDTO>> listarReports(@PathVariable Long id, Pageable pageable){
         var report = reportRepository.buscarReportsPorHelper(id, pageable).map(DetalhesReportUsuarioDTO::new);
         return ResponseEntity.ok(report);
