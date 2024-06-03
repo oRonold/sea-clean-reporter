@@ -44,7 +44,7 @@ public class Report {
     @Column(name = "dt_finalizacao")
     private LocalDateTime dataFinalizacao;
 
-    @OneToMany(mappedBy = "reportId")
+    @OneToMany(mappedBy = "reportId", cascade = CascadeType.ALL)
     private List<HelperReport> reportHelperId;
 
     @OneToMany(mappedBy = "reportId")

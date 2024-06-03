@@ -20,11 +20,11 @@ public class HelperReport {
     @Column(name = "cd_helper_report")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cd_helper", nullable = false)
     private Helper helperId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cd_report", nullable = false)
     private Report reportId;
 }

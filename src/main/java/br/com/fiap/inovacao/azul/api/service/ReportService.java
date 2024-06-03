@@ -6,9 +6,14 @@ import br.com.fiap.inovacao.azul.api.domain.endereco.cidade.Cidade;
 import br.com.fiap.inovacao.azul.api.domain.endereco.estado.Estado;
 import br.com.fiap.inovacao.azul.api.domain.endereco.logradouro.Logradouro;
 import br.com.fiap.inovacao.azul.api.domain.endereco.pais.Pais;
+import br.com.fiap.inovacao.azul.api.domain.helper.HelperReport;
 import br.com.fiap.inovacao.azul.api.domain.report.Report;
 import br.com.fiap.inovacao.azul.api.domain.report.dto.CriarReportDTO;
+import br.com.fiap.inovacao.azul.api.exception.DomainException;
+import br.com.fiap.inovacao.azul.api.repository.HelperReportRepository;
+import br.com.fiap.inovacao.azul.api.repository.HelperRepository;
 import br.com.fiap.inovacao.azul.api.repository.ReportRepository;
+import br.com.fiap.inovacao.azul.api.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +23,19 @@ public class ReportService {
     @Autowired
     private ReportRepository reportRepository;
 
-    public Report criarReport(CriarReportDTO dto){
+    @Autowired
+    private HelperRepository helperRepository;
+
+    @Autowired
+    private HelperReportRepository helperReportRepository;
+
+    public Report criarReport(CriarReportDTO dto, Long id){
+        if(!helperRepository.existsById(id)){
+            throw new DomainException("O helper informado não existe");
+        }
+        var helper = helperRepository.getReferenceById(id);
         var report = new Report(dto);
+        var helperReport = new HelperReport();
 
         var endereco = new Endereco(dto);
         var logradouro = new Logradouro(dto);
@@ -46,6 +62,10 @@ public class ReportService {
         estado.setPaisId(pais);
         pais.getEstadoId().add(estado);
 
+        helperReport.setReportId(report);
+        helperReport.setHelperId(helper);
+
+        helperReportRepository.save(helperReport);
         reportRepository.save(report);
         return report;
     }
