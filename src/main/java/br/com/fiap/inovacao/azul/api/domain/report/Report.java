@@ -2,7 +2,9 @@ package br.com.fiap.inovacao.azul.api.domain.report;
 
 import br.com.fiap.inovacao.azul.api.domain.endereco.Endereco;
 import br.com.fiap.inovacao.azul.api.domain.colaborador.ColaboradorReport;
+import br.com.fiap.inovacao.azul.api.domain.endereco.logradouro.Logradouro;
 import br.com.fiap.inovacao.azul.api.domain.helper.HelperReport;
+import br.com.fiap.inovacao.azul.api.domain.report.dto.CriarReportDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,13 +41,22 @@ public class Report {
     @Enumerated(EnumType.STRING)
     private StatusReport status;
 
+    @Column(name = "dt_finalizacao")
+    private LocalDateTime dataFinalizacao;
+
     @OneToMany(mappedBy = "reportId")
     private List<HelperReport> reportHelperId;
 
     @OneToMany(mappedBy = "reportId")
     private List<ColaboradorReport> colaboradorReportId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cd_endereco", nullable = false)
     private Endereco enderecoId;
+
+    public Report(CriarReportDTO dto){
+        this.descricao = dto.descricao();
+        this.status = StatusReport.OPEN;
+        this.dataFinalizacao = null;
+    }
 }

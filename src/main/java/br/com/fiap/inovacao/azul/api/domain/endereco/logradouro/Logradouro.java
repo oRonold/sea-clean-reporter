@@ -2,6 +2,7 @@ package br.com.fiap.inovacao.azul.api.domain.endereco.logradouro;
 
 import br.com.fiap.inovacao.azul.api.domain.endereco.Endereco;
 import br.com.fiap.inovacao.azul.api.domain.endereco.bairro.Bairro;
+import br.com.fiap.inovacao.azul.api.domain.report.dto.CriarReportDTO;
 import br.com.fiap.inovacao.azul.api.domain.usuario.dto.CriarUsuarioDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -40,6 +41,12 @@ public class Logradouro {
 
     public Logradouro(CriarUsuarioDTO dto){
         this.logradouro = dto.nomeLogradouro();
+        this.cep = dto.cep();
+        enderecoId = new ArrayList<>();
+    }
+
+    public Logradouro(CriarReportDTO dto){
+        this.logradouro = dto.numeroLogradouro();
         this.cep = dto.cep();
         enderecoId = new ArrayList<>();
     }

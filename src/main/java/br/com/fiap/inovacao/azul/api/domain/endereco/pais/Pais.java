@@ -1,6 +1,7 @@
 package br.com.fiap.inovacao.azul.api.domain.endereco.pais;
 
 import br.com.fiap.inovacao.azul.api.domain.endereco.estado.Estado;
+import br.com.fiap.inovacao.azul.api.domain.report.dto.CriarReportDTO;
 import br.com.fiap.inovacao.azul.api.domain.usuario.dto.CriarUsuarioDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -33,6 +34,12 @@ public class Pais {
     private List<Estado> estadoId;
 
     public Pais(CriarUsuarioDTO dto){
+        this.nome = dto.nomePais();
+        this.idd = dto.idd();
+        estadoId = new ArrayList<>();
+    }
+
+    public Pais(CriarReportDTO dto){
         this.nome = dto.nomePais();
         this.idd = dto.idd();
         estadoId = new ArrayList<>();

@@ -2,6 +2,7 @@ package br.com.fiap.inovacao.azul.api.domain.endereco.estado;
 
 import br.com.fiap.inovacao.azul.api.domain.endereco.cidade.Cidade;
 import br.com.fiap.inovacao.azul.api.domain.endereco.pais.Pais;
+import br.com.fiap.inovacao.azul.api.domain.report.dto.CriarReportDTO;
 import br.com.fiap.inovacao.azul.api.domain.usuario.dto.CriarUsuarioDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -39,7 +40,13 @@ public class Estado {
     private Pais paisId;
 
     public Estado(CriarUsuarioDTO dto){
-        this.nome = dto.nomeCidade();
+        this.nome = dto.nomeEstado();
+        this.ddd = dto.ddd();
+        cidadeId = new ArrayList<>();
+    }
+
+    public Estado(CriarReportDTO dto){
+        this.nome = dto.nomeEstado();
         this.ddd = dto.ddd();
         cidadeId = new ArrayList<>();
     }

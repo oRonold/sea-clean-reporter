@@ -1,10 +1,13 @@
 package br.com.fiap.inovacao.azul.api.controller;
 
+import br.com.fiap.inovacao.azul.api.domain.report.dto.CriarReportDTO;
+import br.com.fiap.inovacao.azul.api.domain.report.dto.DetalhesReportDTO;
 import br.com.fiap.inovacao.azul.api.domain.usuario.dto.AtualizarUsuarioDTO;
 import br.com.fiap.inovacao.azul.api.domain.usuario.dto.CriarUsuarioDTO;
 import br.com.fiap.inovacao.azul.api.domain.usuario.dto.DetalhesUsuarioDTO;
 import br.com.fiap.inovacao.azul.api.domain.usuario.dto.ListagemUsuarioDTO;
 import br.com.fiap.inovacao.azul.api.repository.UsuarioRepository;
+import br.com.fiap.inovacao.azul.api.service.ReportService;
 import br.com.fiap.inovacao.azul.api.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,9 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @Autowired
+    private ReportService reportService;
+
+    @Autowired
     private UsuarioRepository usuarioRepository;
 
     @PostMapping
@@ -32,6 +38,14 @@ public class UsuarioController {
         var user = usuarioService.createUser(dto);
         var uri = builder.path("/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(new DetalhesUsuarioDTO(user));
+    }
+
+    @PostMapping("/report")
+    @Transactional
+    public ResponseEntity<DetalhesReportDTO> criarReport(@RequestBody @Valid CriarReportDTO dto, UriComponentsBuilder builder){
+        var report = reportService.criarReport(dto);
+        var uri = builder.path("/{id}").buildAndExpand(report.getId()).toUri();
+        return ResponseEntity.created(uri).body(new DetalhesReportDTO(report));
     }
 
     @GetMapping("/{id}")
