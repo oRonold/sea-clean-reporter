@@ -1,8 +1,9 @@
-package br.com.fiap.inovacao.azul.api.domain.address;
+package br.com.fiap.inovacao.azul.api.domain.endereco;
 
-import br.com.fiap.inovacao.azul.api.domain.address.publicArea.PublicArea;
+import br.com.fiap.inovacao.azul.api.domain.endereco.logradouro.Logradouro;
 import br.com.fiap.inovacao.azul.api.domain.report.Report;
-import br.com.fiap.inovacao.azul.api.domain.user.User;
+import br.com.fiap.inovacao.azul.api.domain.usuario.Usuario;
+import br.com.fiap.inovacao.azul.api.domain.usuario.dto.CriarUsuarioDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ import java.util.List;
 @Entity
 @Table(name = "GS_INOV_ENDERECO")
 @SequenceGenerator(name = "seq_gs_endereco", sequenceName = "seq_gs_inov_endereco", allocationSize = 1)
-public class Address {
+public class Endereco {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gs_endereco")
@@ -25,15 +26,20 @@ public class Address {
     private Long id;
 
     @Column(name = "nr_logradouro", nullable = false, length = 20)
-    private String homeId;
+    private String numeroLogradouro;
 
-    @OneToOne(mappedBy = "addressId")
-    private User userId;
+    @OneToOne(mappedBy = "enderecoId")
+    private Usuario usuarioId;
 
-    @OneToMany(mappedBy = "addressId")
+    @OneToMany(mappedBy = "enderecoId")
     private List<Report> reportId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cd_logradouro", nullable = false)
-    private PublicArea publicAreaId;
+    private Logradouro logradouroId;
+
+    public Endereco(CriarUsuarioDTO dto){
+        this.numeroLogradouro = dto.numeroLogradouro();
+    }
+
 }

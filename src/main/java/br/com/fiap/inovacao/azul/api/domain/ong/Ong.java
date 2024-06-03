@@ -1,6 +1,7 @@
 package br.com.fiap.inovacao.azul.api.domain.ong;
 
-import br.com.fiap.inovacao.azul.api.domain.user.User;
+import br.com.fiap.inovacao.azul.api.domain.ong.dto.CriarOngDTO;
+import br.com.fiap.inovacao.azul.api.domain.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,21 +24,27 @@ public class Ong {
     private Long id;
 
     @Column(name = "nm_ong", nullable = false, length = 100)
-    private String name;
+    private String nome;
 
     @Column(name = "ds_ong", nullable = false, length = 100)
-    private String description;
+    private String descricao;
 
     @Column(name = "ds_email", nullable = false, unique = true, length = 100)
     private String email;
 
     @Column(name = "nr_telefone", nullable = false, length = 15)
-    private String phone;
+    private String telefone;
 
     @OneToMany(mappedBy = "ongId")
-    private List<User> userId;
+    private List<Usuario> usuarioId;
 
     @OneToMany(mappedBy = "ongId")
-    private List<OngCollaborator> ongCollaboratorId;
+    private List<OngCollaborator> ongColaboradorId;
 
+    public Ong(CriarOngDTO dto) {
+        this.nome = dto.nome();
+        this.descricao = dto.descricao();
+        this.email = dto.email();
+        this.telefone = dto.telefone();
+    }
 }

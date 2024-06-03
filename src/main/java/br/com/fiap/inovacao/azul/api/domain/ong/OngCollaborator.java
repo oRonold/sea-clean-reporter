@@ -1,6 +1,6 @@
 package br.com.fiap.inovacao.azul.api.domain.ong;
 
-import br.com.fiap.inovacao.azul.api.domain.collaborator.Collaborator;
+import br.com.fiap.inovacao.azul.api.domain.colaborador.Colaborador;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,5 +26,5 @@ public class OngCollaborator {
 
     @ManyToOne
     @JoinColumn(name = "cd_colaborador", nullable = false)
-    private Collaborator colabId;
+    private Colaborador colabId;
 }

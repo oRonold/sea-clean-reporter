@@ -1,13 +1,14 @@
-package br.com.fiap.inovacao.azul.api.domain.address.country;
+package br.com.fiap.inovacao.azul.api.domain.endereco.pais;
 
-import br.com.fiap.inovacao.azul.api.domain.address.state.State;
+import br.com.fiap.inovacao.azul.api.domain.endereco.estado.Estado;
+import br.com.fiap.inovacao.azul.api.domain.usuario.dto.CriarUsuarioDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 @Getter
 @Setter
@@ -16,18 +17,24 @@ import java.util.Stack;
 @Entity
 @Table(name = "GS_INOV_PAIS")
 @SequenceGenerator(name = "seq_gs_pais", sequenceName = "seq_gs_inov_pais", allocationSize = 1)
-public class Country {
+public class Pais {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gs_pais")
     private Long id;
 
     @Column(name = "nm_cidade", nullable = false, length = 100)
-    private String name;
+    private String nome;
 
     @Column(name = "cd_telefone_pais", nullable = false, length = 3)
     private String idd;
 
-    @OneToMany(mappedBy = "countryId")
-    private List<State> stateId;
+    @OneToMany(mappedBy = "paisId")
+    private List<Estado> estadoId;
+
+    public Pais(CriarUsuarioDTO dto){
+        this.nome = dto.nomePais();
+        this.idd = dto.idd();
+        estadoId = new ArrayList<>();
+    }
 }

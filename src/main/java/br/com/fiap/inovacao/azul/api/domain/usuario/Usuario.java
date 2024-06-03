@@ -1,8 +1,9 @@
-package br.com.fiap.inovacao.azul.api.domain.user;
+package br.com.fiap.inovacao.azul.api.domain.usuario;
 
-import br.com.fiap.inovacao.azul.api.domain.address.Address;
+import br.com.fiap.inovacao.azul.api.domain.endereco.Endereco;
 import br.com.fiap.inovacao.azul.api.domain.helper.Helper;
 import br.com.fiap.inovacao.azul.api.domain.ong.Ong;
+import br.com.fiap.inovacao.azul.api.domain.usuario.dto.CriarUsuarioDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "GS_INOV_USUARIO")
 @SequenceGenerator(name = "seq_gs_usuario", sequenceName = "seq_gs_inov_usuario", allocationSize = 1)
-public class User {
+public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gs_usuario")
@@ -23,27 +24,37 @@ public class User {
     private Long id;
 
     @Column(name = "nm_usuario", nullable = false, length = 100)
-    private String name;
+    private String nome;
 
     @Column(name = "ds_email", nullable = false, unique = true, length = 100)
     private String email;
 
     @Column(name = "ds_senha", nullable = false, length = 10)
-    private String password;
+    private String senha;
 
     @Column(name = "tp_usuario", nullable = false, length = 10)
     @Enumerated(EnumType.STRING)
-    private UserType userType;
+    private TipoUsuario tipoUsuario;
 
-    @OneToOne(mappedBy = "userId")
+    @OneToOne(mappedBy = "usuarioId", cascade = CascadeType.ALL)
     private Helper helperId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cd_ong")
     private Ong ongId;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cd_endereco", nullable = false)
-    private Address addressId;
+    private Endereco enderecoId;
 
+    public Usuario(CriarUsuarioDTO dto) {
+        this.nome = dto.nome();
+        this.email = dto.email();
+        this.senha = dto.senha();
+        this.tipoUsuario = dto.tipoUsuario();
+
+        var helper = new Helper(dto);
+        helper.setUsuarioId(this);
+        this.helperId = helper;
+    }
 }

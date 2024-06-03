@@ -1,6 +1,7 @@
 package br.com.fiap.inovacao.azul.api.domain.helper;
 
-import br.com.fiap.inovacao.azul.api.domain.user.User;
+import br.com.fiap.inovacao.azul.api.domain.usuario.Usuario;
+import br.com.fiap.inovacao.azul.api.domain.usuario.dto.CriarUsuarioDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,16 +24,20 @@ public class Helper {
     private Long id;
 
     @Column(name = "nm_helper", nullable = false, length = 100)
-    private String name;
+    private String nome;
 
     @Column(name = "nr_telefone", nullable = false, length = 15)
-    private String phone;
+    private String telefone;
 
     @OneToOne
     @JoinColumn(name = "cd_usuario", nullable = false)
-    private User userId;
+    private Usuario usuarioId;
 
     @OneToMany(mappedBy = "helperId")
     private List<HelperReport> helperReportId;
 
+    public Helper(CriarUsuarioDTO dto) {
+        this.nome = dto.username();
+        this.telefone = dto.telefone();
+    }
 }

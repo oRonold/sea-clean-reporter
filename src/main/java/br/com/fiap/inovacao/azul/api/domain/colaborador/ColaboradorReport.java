@@ -1,4 +1,4 @@
-package br.com.fiap.inovacao.azul.api.domain.collaborator;
+package br.com.fiap.inovacao.azul.api.domain.colaborador;
 
 import br.com.fiap.inovacao.azul.api.domain.report.Report;
 import jakarta.persistence.*;
@@ -13,7 +13,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "GS_INOV_COLABORADOR_REPORT")
 @SequenceGenerator(name = "seq_gs_colaborador_report", sequenceName = "seq_gs_inov_colaborador_report", allocationSize = 1)
-public class CollaboratorReport {
+public class ColaboradorReport {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gs_colaborador_report")
@@ -22,7 +22,7 @@ public class CollaboratorReport {
 
     @ManyToOne
     @JoinColumn(name = "cd_colaborador", nullable = false)
-    private Collaborator collaboratorId;
+    private Colaborador colaboradorId;
 
     @ManyToOne
     @JoinColumn(name = "cd_report", nullable = false)

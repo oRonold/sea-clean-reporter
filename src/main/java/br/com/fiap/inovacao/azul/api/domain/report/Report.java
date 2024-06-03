@@ -1,7 +1,7 @@
 package br.com.fiap.inovacao.azul.api.domain.report;
 
-import br.com.fiap.inovacao.azul.api.domain.address.Address;
-import br.com.fiap.inovacao.azul.api.domain.collaborator.CollaboratorReport;
+import br.com.fiap.inovacao.azul.api.domain.endereco.Endereco;
+import br.com.fiap.inovacao.azul.api.domain.colaborador.ColaboradorReport;
 import br.com.fiap.inovacao.azul.api.domain.helper.HelperReport;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -29,11 +29,11 @@ public class Report {
     private Long id;
 
     @Column(name = "ds_report", nullable = false, length = 100)
-    private String description;
+    private String descricao;
 
     @Column(name = "dt_report", nullable = false)
     @CreatedDate
-    private LocalDateTime timestamp;
+    private LocalDateTime dataRegistro;
 
     @Column(name = "st_report", nullable = false, length = 10)
     @Enumerated(EnumType.STRING)
@@ -43,9 +43,9 @@ public class Report {
     private List<HelperReport> reportHelperId;
 
     @OneToMany(mappedBy = "reportId")
-    private List<CollaboratorReport> collaboratorReportId;
+    private List<ColaboradorReport> colaboradorReportId;
 
     @ManyToOne
     @JoinColumn(name = "cd_endereco", nullable = false)
-    private Address addressId;
+    private Endereco enderecoId;
 }
