@@ -1,10 +1,14 @@
 package br.com.fiap.inovacao.azul.api.domain.contribuicao;
 
 import br.com.fiap.inovacao.azul.api.domain.colaborador.Colaborador;
+import br.com.fiap.inovacao.azul.api.domain.colaborador.dto.RegistroContribuicaoDTO;
+import br.com.fiap.inovacao.azul.api.domain.report.dto.CriarReportDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 
@@ -15,6 +19,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "GS_INOV_REGISTRO_CONTRIBUICAO")
 @SequenceGenerator(name = "seq_gs_contribuicao", sequenceName = "seq_gs_inov_contribuicao", allocationSize = 1)
+@EntityListeners(AuditingEntityListener.class)
 public class RegistroContribuicao {
 
     @Id
@@ -23,13 +28,18 @@ public class RegistroContribuicao {
     private Long id;
 
     @Column(name = "ds_contribuicao", nullable = false, length = 100)
-    private String description;
+    private String descricao;
 
     @Column(name = "dt_contribuicao", nullable = false)
-    private LocalDate date;
+    @CreatedDate
+    private LocalDate data;
 
-    @ManyToOne
-    @JoinColumn(name = "cd_colaborador", nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cd_colaborador")
     private Colaborador colabId;
+
+    public RegistroContribuicao(RegistroContribuicaoDTO dto){
+        this.descricao = dto.descricao();
+    }
 
 }

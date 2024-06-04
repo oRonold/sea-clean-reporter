@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -47,6 +48,7 @@ public class Colaborador {
         this.nome = dto.username();
         this.status = StatusColaborador.ATIVO;
         this.telefone = dto.telefone();
+        colaboradorReportId = new ArrayList<>();
     }
 
 }

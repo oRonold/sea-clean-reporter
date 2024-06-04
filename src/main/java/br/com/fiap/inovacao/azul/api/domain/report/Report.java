@@ -12,6 +12,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -57,6 +58,7 @@ public class Report {
         this.descricao = dto.descricao();
         this.status = StatusReport.ABERTO;
         this.dataFinalizacao = null;
+        colaboradorReportId = new ArrayList<>();
     }
 
     public void marcarComoConcluido(){
