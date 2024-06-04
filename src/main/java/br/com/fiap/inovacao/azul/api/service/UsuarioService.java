@@ -12,6 +12,8 @@ import br.com.fiap.inovacao.azul.api.domain.usuario.Usuario;
 import br.com.fiap.inovacao.azul.api.domain.usuario.TipoUsuario;
 import br.com.fiap.inovacao.azul.api.domain.usuario.dto.CriarUsuarioDTO;
 import br.com.fiap.inovacao.azul.api.exception.DomainException;
+import br.com.fiap.inovacao.azul.api.repository.ColaboradorRepository;
+import br.com.fiap.inovacao.azul.api.repository.OngColaboradorRepository;
 import br.com.fiap.inovacao.azul.api.repository.OngRepository;
 import br.com.fiap.inovacao.azul.api.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,21 +28,27 @@ public class UsuarioService {
     @Autowired
     private OngRepository ongRepository;
 
+    @Autowired
+    private OngColaboradorRepository ongColaboradorRepository;
+
+    @Autowired
+    private ColaboradorRepository colaboradorRepository;
+
     public Usuario createUser(CriarUsuarioDTO dto){
         var user = new Usuario(dto);
-        if(ValidarColaborador(dto.idOng(), dto.tipoUsuario())){
+        if(dto.idOng() != null && dto.tipoUsuario() == TipoUsuario.COLABORADOR){
+            var ong = ongRepository.getReferenceById(dto.idOng());
             var colaborador = new Colaborador(dto);
             var ongColaborador = new OngColaborador();
-            var ong = ongRepository.getReferenceById(dto.idOng());
 
             ongColaborador.setColabId(colaborador);
             ongColaborador.setOngId(ong);
 
             user.setOngId(ong);
             ong.getUsuarioId().add(user);
+            ongColaboradorRepository.save(ongColaborador);
         } else {
-            user.setOngId(null);
-            user.setTipoUsuario(TipoUsuario.COMUM);
+            throw new DomainException("Só é possivel fazer parte de uma ONG se ela existir ou se voce for um colaborador");
         }
         var endereco = new Endereco(dto);
         var logradouro = new Logradouro(dto);
@@ -71,13 +79,13 @@ public class UsuarioService {
         return user;
     }
 
-    private boolean ValidarColaborador(Long id, TipoUsuario tipoUsuario){
-        if(tipoUsuario != TipoUsuario.COLABORADOR){
-            throw new DomainException("Apenas passe o dado de identificação da ONG se você for um colaborador");
+    public void excluirUsuario(Long id){
+        var usuario = usuarioRepository.getReferenceById(id);
+        if(usuario.getTipoUsuario() == TipoUsuario.COLABORADOR){
+            var colaborador = colaboradorRepository.getReferenceById(id);
+            colaboradorRepository.deleteById(id);
+        } else {
+            usuarioRepository.delete(usuario);
         }
-        if(!ongRepository.existsById(id)){
-            throw new DomainException("ONG referenciada não existe");
-        }
-        return true;
     }
 }

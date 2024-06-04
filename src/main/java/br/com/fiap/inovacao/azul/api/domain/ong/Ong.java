@@ -1,5 +1,6 @@
 package br.com.fiap.inovacao.azul.api.domain.ong;
 
+import br.com.fiap.inovacao.azul.api.domain.ong.dto.AtualizarOngDTO;
 import br.com.fiap.inovacao.azul.api.domain.ong.dto.CriarOngDTO;
 import br.com.fiap.inovacao.azul.api.domain.usuario.Usuario;
 import jakarta.persistence.*;
@@ -38,13 +39,19 @@ public class Ong {
     @OneToMany(mappedBy = "ongId")
     private List<Usuario> usuarioId;
 
-    @OneToMany(mappedBy = "ongId")
-    private List<OngCollaborator> ongColaboradorId;
+    @OneToMany(mappedBy = "ongId", cascade = CascadeType.ALL)
+    private List<OngColaborador> ongColaboradorId;
 
     public Ong(CriarOngDTO dto) {
         this.nome = dto.nome();
         this.descricao = dto.descricao();
         this.email = dto.email();
+        this.telefone = dto.telefone();
+    }
+
+    public void atualizarInformacoes(AtualizarOngDTO dto){
+        this.nome = dto.nome();
+        this.descricao = dto.descricao();
         this.telefone = dto.telefone();
     }
 }

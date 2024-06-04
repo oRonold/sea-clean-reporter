@@ -40,7 +40,7 @@ public class Usuario {
     @OneToOne(mappedBy = "usuarioId", cascade = CascadeType.ALL)
     private Helper helperId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "cd_ong")
     private Ong ongId;
 

@@ -13,7 +13,6 @@ import br.com.fiap.inovacao.azul.api.exception.DomainException;
 import br.com.fiap.inovacao.azul.api.repository.HelperReportRepository;
 import br.com.fiap.inovacao.azul.api.repository.HelperRepository;
 import br.com.fiap.inovacao.azul.api.repository.ReportRepository;
-import br.com.fiap.inovacao.azul.api.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

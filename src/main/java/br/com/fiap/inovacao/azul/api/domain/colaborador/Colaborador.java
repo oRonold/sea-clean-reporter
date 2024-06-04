@@ -1,7 +1,7 @@
 package br.com.fiap.inovacao.azul.api.domain.colaborador;
 
 import br.com.fiap.inovacao.azul.api.domain.contribuicao.RegistroContribuicao;
-import br.com.fiap.inovacao.azul.api.domain.ong.OngCollaborator;
+import br.com.fiap.inovacao.azul.api.domain.ong.OngColaborador;
 import br.com.fiap.inovacao.azul.api.domain.usuario.dto.CriarUsuarioDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -35,7 +35,7 @@ public class Colaborador {
     private String telefone;
 
     @OneToMany(mappedBy = "colabId")
-    private List<OngCollaborator> ongColaboradorId;
+    private List<OngColaborador> ongColaboradorId;
 
     @OneToMany(mappedBy = "colabId")
     private List<RegistroContribuicao> contribuicoesId;

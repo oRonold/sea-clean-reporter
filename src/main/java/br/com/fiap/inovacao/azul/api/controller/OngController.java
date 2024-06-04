@@ -1,9 +1,11 @@
 package br.com.fiap.inovacao.azul.api.controller;
 
 import br.com.fiap.inovacao.azul.api.domain.ong.Ong;
+import br.com.fiap.inovacao.azul.api.domain.ong.dto.AtualizarOngDTO;
 import br.com.fiap.inovacao.azul.api.domain.ong.dto.CriarOngDTO;
 import br.com.fiap.inovacao.azul.api.domain.ong.dto.DetalhesOngDTO;
 import br.com.fiap.inovacao.azul.api.domain.ong.dto.ListagemOngDTO;
+import br.com.fiap.inovacao.azul.api.repository.OngColaboradorRepository;
 import br.com.fiap.inovacao.azul.api.repository.OngRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +32,29 @@ public class OngController {
         return ResponseEntity.created(uri).body(new ListagemOngDTO(ong));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<DetalhesOngDTO> detalhesOng(@PathVariable Long id){
+        var ongs = ongRepository.getReferenceById(id);
+        return ResponseEntity.ok(new DetalhesOngDTO(ongs));
+    }
+
     @GetMapping
-    public ResponseEntity<Page<DetalhesOngDTO>> listar(Pageable pageable){
-        var ongs = ongRepository.findAll(pageable).map(DetalhesOngDTO::new);
-        return ResponseEntity.ok(ongs);
+    public ResponseEntity<Page<ListagemOngDTO>> listar(Pageable pageable){
+        var lista = ongRepository.findAll(pageable).map(ListagemOngDTO::new);
+        return ResponseEntity.ok(lista);
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<DetalhesOngDTO> atualizar(@RequestBody @Valid AtualizarOngDTO dto, @PathVariable Long id){
+        var ong = ongRepository.getReferenceById(id);
+        ong.atualizarInformacoes(dto);
+        return ResponseEntity.ok(new DetalhesOngDTO(ong));
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<DetalhesOngDTO> excluir(@PathVariable Long id){
+        return ResponseEntity.notFound().build();
     }
 }

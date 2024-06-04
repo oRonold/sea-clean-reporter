@@ -7,9 +7,9 @@ import br.com.fiap.inovacao.azul.api.domain.ong.dto.ListagemOngDTO;
 import br.com.fiap.inovacao.azul.api.domain.usuario.Usuario;
 import br.com.fiap.inovacao.azul.api.domain.usuario.TipoUsuario;
 
-public record DetalhesUsuarioDTO(Long userId, String user, DetalhesOngDTO ong, String email, String senha, TipoUsuario tipoUsuario, DetalhesHelperDTO helper, DetalhesEnderecoDTO endereco) {
+public record DetalhesUsuarioDTO(Long userId, String user, ListagemOngDTO ong, String email, String senha, TipoUsuario tipoUsuario, DetalhesHelperDTO helper, DetalhesEnderecoDTO endereco) {
 
     public DetalhesUsuarioDTO(Usuario usuario){
-        this(usuario.getId(), usuario.getNome(), usuario.getOngId() != null ? new DetalhesOngDTO(usuario.getOngId()) : null, usuario.getEmail(), usuario.getSenha(), usuario.getTipoUsuario(), new DetalhesHelperDTO(usuario.getHelperId()), new DetalhesEnderecoDTO(usuario.getEnderecoId()));
+        this(usuario.getId(), usuario.getNome(), usuario.getOngId() != null ? new ListagemOngDTO(usuario.getOngId()) : null, usuario.getEmail(), usuario.getSenha(), usuario.getTipoUsuario(), new DetalhesHelperDTO(usuario.getHelperId()), new DetalhesEnderecoDTO(usuario.getEnderecoId()));
     }
 }

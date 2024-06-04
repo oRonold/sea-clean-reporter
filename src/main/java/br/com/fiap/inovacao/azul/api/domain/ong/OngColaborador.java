@@ -13,18 +13,18 @@ import lombok.Setter;
 @Entity
 @Table(name = "GS_INOV_ONG_COLAB")
 @SequenceGenerator(name = "seq_gs_ong_colaborador", sequenceName = "seq_gs_inov_ong_colaborador", allocationSize = 1)
-public class OngCollaborator {
+public class OngColaborador {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gs_ong_colaborador")
     @Column(name = "cd_ong_colaborador")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cd_ong", nullable = false)
     private Ong ongId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cd_colaborador", nullable = false)
     private Colaborador colabId;
 }

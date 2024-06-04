@@ -90,7 +90,7 @@ public class UsuarioController {
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<Void> excluir(@PathVariable Long id){
-        usuarioRepository.deleteById(id);
+        usuarioService.excluirUsuario(id);
         return ResponseEntity.noContent().build();
     }
 
