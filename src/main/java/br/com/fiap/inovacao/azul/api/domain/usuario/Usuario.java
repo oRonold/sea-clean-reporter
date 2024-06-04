@@ -33,7 +33,7 @@ public class Usuario {
     @Column(name = "ds_senha", nullable = false, length = 10)
     private String senha;
 
-    @Column(name = "tp_usuario", nullable = false, length = 10)
+    @Column(name = "tp_usuario", nullable = false, length = 11)
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipoUsuario;
 

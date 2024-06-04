@@ -1,11 +1,13 @@
 package br.com.fiap.inovacao.azul.api.service;
 
+import br.com.fiap.inovacao.azul.api.domain.colaborador.Colaborador;
 import br.com.fiap.inovacao.azul.api.domain.endereco.Endereco;
 import br.com.fiap.inovacao.azul.api.domain.endereco.cidade.Cidade;
 import br.com.fiap.inovacao.azul.api.domain.endereco.pais.Pais;
 import br.com.fiap.inovacao.azul.api.domain.endereco.bairro.Bairro;
 import br.com.fiap.inovacao.azul.api.domain.endereco.logradouro.Logradouro;
 import br.com.fiap.inovacao.azul.api.domain.endereco.estado.Estado;
+import br.com.fiap.inovacao.azul.api.domain.ong.OngColaborador;
 import br.com.fiap.inovacao.azul.api.domain.usuario.Usuario;
 import br.com.fiap.inovacao.azul.api.domain.usuario.TipoUsuario;
 import br.com.fiap.inovacao.azul.api.domain.usuario.dto.CriarUsuarioDTO;
@@ -26,13 +28,19 @@ public class UsuarioService {
 
     public Usuario createUser(CriarUsuarioDTO dto){
         var user = new Usuario(dto);
-        if(dto.idOng() != null && dto.tipoUsuario() == TipoUsuario.COLABORADOR){
-            ValidarColaborador(dto.idOng(), dto.tipoUsuario());
+        if(ValidarColaborador(dto.idOng(), dto.tipoUsuario())){
+            var colaborador = new Colaborador(dto);
+            var ongColaborador = new OngColaborador();
             var ong = ongRepository.getReferenceById(dto.idOng());
+
+            ongColaborador.setColabId(colaborador);
+            ongColaborador.setOngId(ong);
+
             user.setOngId(ong);
             ong.getUsuarioId().add(user);
         } else {
-            throw new DomainException("A ONG informada nao existe, se existe, por favor coloque o tipo usuario como COLABORADOR");
+            user.setOngId(null);
+            user.setTipoUsuario(TipoUsuario.COMUM);
         }
         var endereco = new Endereco(dto);
         var logradouro = new Logradouro(dto);
@@ -63,12 +71,13 @@ public class UsuarioService {
         return user;
     }
 
-    private void ValidarColaborador(Long id, TipoUsuario tipoUsuario){
+    private boolean ValidarColaborador(Long id, TipoUsuario tipoUsuario){
         if(tipoUsuario != TipoUsuario.COLABORADOR){
-            throw new DomainException("Apenas passe o dado de identificação da ong se você for um colaborador");
+            throw new DomainException("Apenas passe o dado de identificação da ONG se você for um colaborador");
         }
         if(!ongRepository.existsById(id)){
             throw new DomainException("ONG referenciada não existe");
         }
+        return true;
     }
 }

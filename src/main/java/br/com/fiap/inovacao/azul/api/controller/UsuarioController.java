@@ -1,6 +1,5 @@
 package br.com.fiap.inovacao.azul.api.controller;
 
-import br.com.fiap.inovacao.azul.api.domain.report.StatusReport;
 import br.com.fiap.inovacao.azul.api.domain.report.dto.CriarReportDTO;
 import br.com.fiap.inovacao.azul.api.domain.report.dto.DetalhesReportDTO;
 import br.com.fiap.inovacao.azul.api.domain.report.dto.DetalhesReportUsuarioDTO;
@@ -21,8 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/usuarios")
