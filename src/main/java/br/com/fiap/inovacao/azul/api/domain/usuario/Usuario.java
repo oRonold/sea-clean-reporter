@@ -52,7 +52,6 @@ public class Usuario {
         this.nome = dto.nome();
         this.email = dto.email();
         this.senha = dto.senha();
-        this.tipoUsuario = dto.tipoUsuario();
 
         var helper = new Helper(dto);
         helper.setUsuarioId(this);

@@ -36,7 +36,8 @@ public class UsuarioService {
 
     public Usuario createUser(CriarUsuarioDTO dto){
         var user = new Usuario(dto);
-        if(dto.idOng() != null && dto.tipoUsuario() == TipoUsuario.COLABORADOR){
+        if(dto.idOng() != null){
+            user.setTipoUsuario(TipoUsuario.COLABORADOR);
             var ong = ongRepository.getReferenceById(dto.idOng());
             var colaborador = new Colaborador(dto);
             var ongColaborador = new OngColaborador();
@@ -48,7 +49,7 @@ public class UsuarioService {
             ong.getUsuarioId().add(user);
             ongColaboradorRepository.save(ongColaborador);
         } else {
-            throw new DomainException("Só é possivel fazer parte de uma ONG se ela existir ou se voce for um colaborador");
+            user.setTipoUsuario(TipoUsuario.COMUM);
         }
         var endereco = new Endereco(dto);
         var logradouro = new Logradouro(dto);

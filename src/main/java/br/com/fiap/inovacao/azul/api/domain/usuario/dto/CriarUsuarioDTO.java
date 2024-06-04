@@ -21,8 +21,6 @@ public record CriarUsuarioDTO(
         @NotEmpty
         @Length(max = 10)
         String senha,
-        @NonNull
-        TipoUsuario tipoUsuario,
         @NotEmpty
         String numeroLogradouro,
         @NotEmpty

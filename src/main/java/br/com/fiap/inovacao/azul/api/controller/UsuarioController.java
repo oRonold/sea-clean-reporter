@@ -61,9 +61,9 @@ public class UsuarioController {
         return ResponseEntity.ok(new DetalhesReportDTO(report));
     }
 
-    @GetMapping("/report/{id}")
-    public ResponseEntity<Page<DetalhesReportUsuarioDTO>> listarReports(@PathVariable Long id, Pageable pageable){
-        var report = reportRepository.buscarReportsPorHelper(id, pageable).map(DetalhesReportUsuarioDTO::new);
+    @GetMapping("/report/{idHelper}")
+    public ResponseEntity<Page<DetalhesReportUsuarioDTO>> listarReports(@PathVariable Long idHelper, Pageable pageable){
+        var report = reportRepository.buscarReportsPorHelper(idHelper, pageable).map(DetalhesReportUsuarioDTO::new);
         return ResponseEntity.ok(report);
     }
 
