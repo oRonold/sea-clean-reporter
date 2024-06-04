@@ -32,7 +32,7 @@ public class UsuarioService {
             user.setOngId(ong);
             ong.getUsuarioId().add(user);
         } else {
-            user.setOngId(null);
+            throw new DomainException("A ONG informada nao existe, se existe, por favor coloque o tipo usuario como COLABORADOR");
         }
         var endereco = new Endereco(dto);
         var logradouro = new Logradouro(dto);
