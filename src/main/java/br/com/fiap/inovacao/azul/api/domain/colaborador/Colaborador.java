@@ -51,4 +51,8 @@ public class Colaborador {
         colaboradorReportId = new ArrayList<>();
     }
 
+    public void marcarInativo(){
+        this.status = StatusColaborador.INATIVO;
+    }
+
 }

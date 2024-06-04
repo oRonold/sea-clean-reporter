@@ -5,6 +5,7 @@ import br.com.fiap.inovacao.azul.api.domain.colaborador.dto.DetalhesContribuicoe
 import br.com.fiap.inovacao.azul.api.domain.colaborador.dto.ListagemColaboradorDTO;
 import br.com.fiap.inovacao.azul.api.domain.colaborador.dto.RegistroContribuicaoDTO;
 import br.com.fiap.inovacao.azul.api.repository.ColaboradorRepository;
+import br.com.fiap.inovacao.azul.api.repository.RegistroContribuicaoRepository;
 import br.com.fiap.inovacao.azul.api.service.ReportService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -22,6 +23,9 @@ public class ColaboradorController {
     private ColaboradorRepository colaboradorRepository;
 
     @Autowired
+    private RegistroContribuicaoRepository registroContribuicaoRepository;
+
+    @Autowired
     private ReportService reportService;
 
     @GetMapping
@@ -31,8 +35,9 @@ public class ColaboradorController {
     }
 
     @GetMapping("/{id}/contribuicoes")
-    public ResponseEntity<DetalhesContribuicoesDTO> contribuicoesConcluidas(@PathVariable Long id){
-        return null;
+    public ResponseEntity<Page<DetalhesContribuicoesDTO>> contribuicoesConcluidas(@PathVariable Long id, Pageable pageable){
+        var lista = registroContribuicaoRepository.pesquisarPorContribuicoesFeitas(id, pageable).map(DetalhesContribuicoesDTO::new);
+        return ResponseEntity.ok(lista);
     }
 
     @PutMapping("/{idColab}/report/{idReport}")
@@ -41,5 +46,19 @@ public class ColaboradorController {
         reportService.confirmarContribuicao(dto, idColab, idReport);
         var colaborador = colaboradorRepository.getReferenceById(idColab);
         return ResponseEntity.ok(new DetalhesColaboradorDTO(colaborador));
+    }
+
+    @DeleteMapping("/{id}/inativo")
+    @Transactional
+    public ResponseEntity<Void> marcarColaboradorInativo(@PathVariable Long id){
+        var colaborador = colaboradorRepository.getReferenceById(id);
+        colaborador.marcarInativo();
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/inativos")
+    public ResponseEntity<Page<ListagemColaboradorDTO>> mostrarColaboradoresInativos(Pageable pageable){
+        var lista = colaboradorRepository.pesquisarColaboradoresInativos(pageable).map(ListagemColaboradorDTO::new);
+        return ResponseEntity.ok(lista);
     }
 }
