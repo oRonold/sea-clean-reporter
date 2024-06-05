@@ -39,7 +39,7 @@ public class Ong {
     @OneToMany(mappedBy = "ongId")
     private List<Usuario> usuarioId;
 
-    @OneToMany(mappedBy = "ongId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "ongId", cascade = CascadeType.MERGE)
     private List<OngColaborador> ongColaboradorId;
 
     public Ong(CriarOngDTO dto) {

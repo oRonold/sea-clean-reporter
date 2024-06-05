@@ -83,7 +83,6 @@ public class UsuarioService {
     public void excluirUsuario(Long id){
         var usuario = usuarioRepository.getReferenceById(id);
         if(usuario.getTipoUsuario() == TipoUsuario.COLABORADOR){
-            var colaborador = colaboradorRepository.getReferenceById(id);
             colaboradorRepository.deleteById(id);
         } else {
             usuarioRepository.delete(usuario);

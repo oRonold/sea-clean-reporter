@@ -35,13 +35,13 @@ public class Colaborador {
     @Column(name = "nr_telefone", nullable = false, length = 15)
     private String telefone;
 
-    @OneToMany(mappedBy = "colabId")
+    @OneToMany(mappedBy = "colabId", cascade = CascadeType.ALL)
     private List<OngColaborador> ongColaboradorId;
 
-    @OneToMany(mappedBy = "colabId")
+    @OneToMany(mappedBy = "colabId", cascade = CascadeType.ALL)
     private List<RegistroContribuicao> contribuicoesId;
 
-    @OneToMany(mappedBy = "colaboradorId")
+    @OneToMany(mappedBy = "colaboradorId", cascade = CascadeType.ALL)
     private List<ColaboradorReport> colaboradorReportId;
 
     public Colaborador(CriarUsuarioDTO dto){
