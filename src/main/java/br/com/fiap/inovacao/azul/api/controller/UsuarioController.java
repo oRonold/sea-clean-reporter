@@ -11,7 +11,9 @@ import br.com.fiap.inovacao.azul.api.repository.ReportRepository;
 import br.com.fiap.inovacao.azul.api.repository.UsuarioRepository;
 import br.com.fiap.inovacao.azul.api.service.ReportService;
 import br.com.fiap.inovacao.azul.api.service.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +39,7 @@ public class UsuarioController {
     @Autowired
     private ReportRepository reportRepository;
 
+    @Operation(summary = "Cadastra usuário")
     @PostMapping
     @Transactional
     public ResponseEntity<DetalhesUsuarioDTO> criar(@RequestBody @Valid CriarUsuarioDTO dto, UriComponentsBuilder builder){
@@ -45,6 +48,7 @@ public class UsuarioController {
         return ResponseEntity.created(uri).body(new DetalhesUsuarioDTO(user));
     }
 
+    @Operation(summary = "Cria report e o atribui ao usuario/helper")
     @PostMapping("/report/helper/{idHelper}")
     @Transactional
     public ResponseEntity<DetalhesReportDTO> criarReport(@RequestBody @Valid CriarReportDTO dto, @PathVariable("idHelper") Long id, UriComponentsBuilder builder){
@@ -53,6 +57,7 @@ public class UsuarioController {
         return ResponseEntity.created(uri).body(new DetalhesReportDTO(report));
     }
 
+    @Operation(summary = "Marca o report como concluído")
     @PutMapping("/report/end/{id}")
     @Transactional
     public ResponseEntity<DetalhesReportDTO> marcarReportConcluido(@PathVariable Long id){
@@ -61,24 +66,28 @@ public class UsuarioController {
         return ResponseEntity.ok(new DetalhesReportDTO(report));
     }
 
+    @Operation(summary = "Lista os reports existentes relacionado ao usuário/helper")
     @GetMapping("/report/{idHelper}")
-    public ResponseEntity<Page<DetalhesReportUsuarioDTO>> listarReports(@PathVariable Long idHelper, Pageable pageable){
+    public ResponseEntity<Page<DetalhesReportUsuarioDTO>> listarReports(@PathVariable Long idHelper, @ParameterObject @PageableDefault(size = 5) Pageable pageable){
         var report = reportRepository.buscarReportsPorHelper(idHelper, pageable).map(DetalhesReportUsuarioDTO::new);
         return ResponseEntity.ok(report);
     }
 
+    @Operation(summary = "Mostra os detalhes completos do usuário")
     @GetMapping("/{id}")
     public ResponseEntity<DetalhesUsuarioDTO> detalhes(@PathVariable Long id){
         var user = usuarioRepository.getReferenceById(id);
         return ResponseEntity.ok(new DetalhesUsuarioDTO(user));
     }
 
+    @Operation(summary = "Lista todos os usuários existentes")
     @GetMapping
-    public ResponseEntity<Page<ListagemUsuarioDTO>> listar(@PageableDefault(size = 5, sort = {"nome"}) Pageable pageable){
+    public ResponseEntity<Page<ListagemUsuarioDTO>> listar(@ParameterObject @PageableDefault(size = 5, sort = {"nome"}) Pageable pageable){
         var listaUsuarios = usuarioRepository.findAll(pageable).map(ListagemUsuarioDTO::new);
         return ResponseEntity.ok(listaUsuarios);
     }
 
+    @Operation(summary = "Atualiza usuário específico")
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<DetalhesUsuarioDTO> atualizar(@RequestBody @Valid AtualizarUsuarioDTO dto, @PathVariable Long id){
@@ -87,6 +96,7 @@ public class UsuarioController {
         return ResponseEntity.ok(new DetalhesUsuarioDTO(usuario));
     }
 
+    @Operation(summary = "Exclui usuário")
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<Void> excluir(@PathVariable Long id){

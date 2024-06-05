@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface RegistroContribuicaoRepository extends JpaRepository<RegistroContribuicao, Long> {
 
-    @Query("from RegistroContribuicao rc where rc.colabId.id = ?1")
-    Page<RegistroContribuicao> pesquisarPorContribuicoesFeitas(Long id, Pageable pageable);
+    @Query("select(rc) from RegistroContribuicao rc where rc.colabId.id = ?1")
+    RegistroContribuicao pesquisarPorContribuicoesFeitas(Long id);
 }
