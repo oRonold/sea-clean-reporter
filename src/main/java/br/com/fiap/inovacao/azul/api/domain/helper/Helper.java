@@ -33,7 +33,7 @@ public class Helper {
     @JoinColumn(name = "cd_usuario", nullable = false)
     private Usuario usuarioId;
 
-    @OneToMany(mappedBy = "helperId")
+    @OneToMany(mappedBy = "helperId", cascade = CascadeType.ALL)
     private List<HelperReport> helperReportId;
 
     public Helper(CriarUsuarioDTO dto) {

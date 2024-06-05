@@ -36,10 +36,10 @@ public class Ong {
     @Column(name = "nr_telefone", nullable = false, length = 15)
     private String telefone;
 
-    @OneToMany(mappedBy = "ongId")
+    @OneToMany(mappedBy = "ongId", cascade = CascadeType.REMOVE)
     private List<Usuario> usuarioId;
 
-    @OneToMany(mappedBy = "ongId", cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "ongId", cascade = CascadeType.ALL)
     private List<OngColaborador> ongColaboradorId;
 
     public Ong(CriarOngDTO dto) {

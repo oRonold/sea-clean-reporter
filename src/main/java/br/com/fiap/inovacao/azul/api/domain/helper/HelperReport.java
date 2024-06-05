@@ -12,7 +12,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "GS_INOV_HELPER_REPORT")
-@SequenceGenerator(name = "seq_gs_helper_report", sequenceName = "seq_gs_inov_helper_report", initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "seq_gs_helper_report", sequenceName = "seq_gs_inov_helper_report", allocationSize = 1)
 public class HelperReport {
 
     @Id

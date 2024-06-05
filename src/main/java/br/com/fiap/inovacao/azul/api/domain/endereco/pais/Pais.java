@@ -22,9 +22,10 @@ public class Pais {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gs_pais")
+    @Column(name = "cd_pais")
     private Long id;
 
-    @Column(name = "nm_cidade", nullable = false, length = 100)
+    @Column(name = "nm_pais", nullable = false, length = 100)
     private String nome;
 
     @Column(name = "cd_telefone_pais", nullable = false, length = 3)

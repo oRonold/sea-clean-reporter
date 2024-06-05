@@ -20,7 +20,7 @@ public class OngColaborador {
     @Column(name = "cd_ong_colaborador")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cd_ong", nullable = false)
     private Ong ongId;
 

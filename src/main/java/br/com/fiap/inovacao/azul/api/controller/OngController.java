@@ -65,6 +65,7 @@ public class OngController {
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<DetalhesOngDTO> excluir(@PathVariable Long id){
-        return ResponseEntity.notFound().build();
+        ongRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

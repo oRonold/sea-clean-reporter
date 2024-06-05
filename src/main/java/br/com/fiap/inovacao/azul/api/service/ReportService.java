@@ -59,15 +59,16 @@ public class ReportService {
 
             criarEnderecoEAssociacao(dto, report, helper, helperReport);
 
+            helperRepository.save(helper);
             helperReportRepository.save(helperReport);
             reportRepository.save(report);
             colaboradorReportRepository.save(colabReport);
         } else {
             criarEnderecoEAssociacao(dto, report, helper, helperReport);
 
-            helperReportRepository.save(helperReport);
             reportRepository.save(report);
-            colaboradorReportRepository.save(colabReport);
+            helperRepository.save(helper);
+            helperReportRepository.save(helperReport);
         }
         return report;
     }
