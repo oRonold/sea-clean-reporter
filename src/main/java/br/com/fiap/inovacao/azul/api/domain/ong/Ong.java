@@ -50,8 +50,14 @@ public class Ong {
     }
 
     public void atualizarInformacoes(AtualizarOngDTO dto){
-        this.nome = dto.nome();
-        this.descricao = dto.descricao();
-        this.telefone = dto.telefone();
+        if(dto.nome() != null){
+            this.nome = dto.nome();
+        }
+        if(dto.descricao() != null){
+            this.descricao = dto.descricao();
+        }
+        if(dto.telefone() != null){
+            this.telefone = dto.telefone();
+        }
     }
 }
