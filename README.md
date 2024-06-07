@@ -10,8 +10,8 @@
 - Gabriel Souza - RM 98570 - 2TDSS
 
 ## Vídeos
-- Pitch:
-- Demonstração do software:
+- Pitch: https://youtu.be/ZY3iHd05eJg?feature=shared
+- Demonstração do software: [https://youtu.be/Vg2IBk2mmFQ](https://youtu.be/Vg2IBk2mmFQ)
 
 ## Documentação :scroll:
 <p>Para acessar a documentação e testar os endpoints da aplicação, foi implementado o Swagger,
