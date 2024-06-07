@@ -19,5 +19,6 @@ o gerador automático de documentação de endpoints. Para acessá-lo é necess�
 rodando na sua IDE.
 </p>
 <p>Assim que a aplicação estiver no ar, é possível acessar este link: http://localhost:8080/swagger-ui/index.html#/</p>
+<p>E realizar o teste da API e seus endpoints</p>
 
 - AVISO: O link apenas funciona com a aplicação no ar.
