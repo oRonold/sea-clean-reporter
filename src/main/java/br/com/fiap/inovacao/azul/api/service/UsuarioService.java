@@ -1,6 +1,7 @@
 package br.com.fiap.inovacao.azul.api.service;
 
 import br.com.fiap.inovacao.azul.api.domain.colaborador.Colaborador;
+import br.com.fiap.inovacao.azul.api.domain.colaborador.StatusColaborador;
 import br.com.fiap.inovacao.azul.api.domain.endereco.Endereco;
 import br.com.fiap.inovacao.azul.api.domain.endereco.cidade.Cidade;
 import br.com.fiap.inovacao.azul.api.domain.endereco.pais.Pais;
@@ -11,7 +12,6 @@ import br.com.fiap.inovacao.azul.api.domain.ong.OngColaborador;
 import br.com.fiap.inovacao.azul.api.domain.usuario.Usuario;
 import br.com.fiap.inovacao.azul.api.domain.usuario.TipoUsuario;
 import br.com.fiap.inovacao.azul.api.domain.usuario.dto.CriarUsuarioDTO;
-import br.com.fiap.inovacao.azul.api.exception.DomainException;
 import br.com.fiap.inovacao.azul.api.repository.ColaboradorRepository;
 import br.com.fiap.inovacao.azul.api.repository.OngColaboradorRepository;
 import br.com.fiap.inovacao.azul.api.repository.OngRepository;
@@ -34,29 +34,16 @@ public class UsuarioService {
     @Autowired
     private ColaboradorRepository colaboradorRepository;
 
-    public Usuario createUser(CriarUsuarioDTO dto){
+    public Usuario criarUsuario(CriarUsuarioDTO dto){
         var user = new Usuario(dto);
-        if(dto.idOng() != null){
-            user.setTipoUsuario(TipoUsuario.COLABORADOR);
-            var ong = ongRepository.getReferenceById(dto.idOng());
-            var colaborador = new Colaborador(dto);
-            var ongColaborador = new OngColaborador();
-
-            ongColaborador.setColabId(colaborador);
-            ongColaborador.setOngId(ong);
-
-            user.setOngId(ong);
-            ong.getUsuarioId().add(user);
-            ongColaboradorRepository.save(ongColaborador);
-        } else {
-            user.setTipoUsuario(TipoUsuario.COMUM);
-        }
         var endereco = new Endereco(dto);
         var logradouro = new Logradouro(dto);
         var bairro = new Bairro(dto);
         var cidade = new Cidade(dto);
         var estado = new Estado(dto);
         var pais = new Pais(dto);
+
+        user.setTipoUsuario(TipoUsuario.COMUM);
 
         endereco.setUsuarioId(user);
         user.setEnderecoId(endereco);
@@ -87,5 +74,30 @@ public class UsuarioService {
         } else {
             usuarioRepository.delete(usuario);
         }
+    }
+
+    public Usuario adicionarOng(Long idUsuario, Long idOng){
+        var usuario = usuarioRepository.getReferenceById(idUsuario);
+        var ong = ongRepository.getReferenceById(idOng);
+
+        usuario.setOngId(ong);
+        usuario.setTipoUsuario(TipoUsuario.COLABORADOR);
+        ong.getUsuarioId().add(usuario);
+
+
+        var colaborador = new Colaborador();
+        colaborador.setNome(usuario.getNome());
+        colaborador.setStatus(StatusColaborador.ATIVO);
+        colaborador.setTelefone(usuario.getHelperId().getTelefone());
+
+        var ongColaborador = new OngColaborador();
+        ongColaborador.setOngId(ong);
+        ongColaborador.setColabId(colaborador);
+
+        usuarioRepository.save(usuario);
+        ongRepository.save(ong);
+        colaboradorRepository.save(colaborador);
+        ongColaboradorRepository.save(ongColaborador);
+        return usuario;
     }
 }

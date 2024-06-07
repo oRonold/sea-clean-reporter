@@ -11,7 +11,6 @@ public record CriarUsuarioDTO(
         String nome,
         @NotEmpty
         String username,
-        Long idOng,
         @NotEmpty
         @Email
         String email,

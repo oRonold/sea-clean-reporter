@@ -43,7 +43,7 @@ public class UsuarioController {
     @PostMapping
     @Transactional
     public ResponseEntity<DetalhesUsuarioDTO> criar(@RequestBody @Valid CriarUsuarioDTO dto, UriComponentsBuilder builder){
-        var user = usuarioService.createUser(dto);
+        var user = usuarioService.criarUsuario(dto);
         var uri = builder.path("/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(new DetalhesUsuarioDTO(user));
     }
@@ -55,6 +55,14 @@ public class UsuarioController {
         var report = reportService.criarReport(dto, id);
         var uri = builder.path("/{id}").buildAndExpand(report.getId()).toUri();
         return ResponseEntity.created(uri).body(new DetalhesReportDTO(report));
+    }
+
+    @Operation(summary = "Adiciona o usuário em uma ONG")
+    @PostMapping("/{idUsuario}/ong/{idOng}")
+    @Transactional
+    public ResponseEntity<DetalhesUsuarioDTO> adicionarOng(Long idUsuario, Long idOng){
+        var usuario = usuarioService.adicionarOng(idUsuario, idOng);
+        return ResponseEntity.ok(new DetalhesUsuarioDTO(usuario));
     }
 
     @Operation(summary = "Marca o report como concluído")
